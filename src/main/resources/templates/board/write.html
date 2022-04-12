@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en"xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form  th:action="@{/post}"  method="post" enctype="multipart/form-data">
+    주문일자 : <input type="date" name="order_date"> <br>
+    배송일자 : <input type="date" name="delivert"> <br>
+    공급자 : <input type="text" name="producer"> <br>
+    상품 내역 요약 : <input type="text" name="title"> <br>
+    거래 현황 : <input type="text" name="trans"> <br>
+    거래 명세서 : <input multiple="multiple" type="file" name="tradstat"><br>
+    세금 계산서 : <input multiple="multiple" type="file" name="taxbill"><br>
+    출하 증명서 : <input multiple="multiple" type="file" name="shopcert"><br>
+
+    <button type="submit">등록</button>
+</form>
+</body>
+</html>
