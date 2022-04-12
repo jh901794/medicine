@@ -14,13 +14,14 @@
         <th> 공급자</th>
         <th> 상품내역 요약</th>
         <th> 거래현황</th>
+
     </tr>
     </thead>
     <tbody>
     <!-- CONTENTS !-->
     <tr th:each="board : ${boardList}">
         <td>
-            <form  th:action="@{/detail}" method="get">
+            <form th:action="@{/detail}" method="get">
                 <span th:text="${board.id}"></span>
             </form>
         </td>
@@ -42,6 +43,31 @@
 
     </tr>
     </tbody>
+</table>
+<table>
+    <thead>
+    <tr>
+        <th> 거래명세서</th>
+        <th> 세금계산서</th>
+        <th> 출하증명서</th>
+    </tr>
+    <tr>
+        <td>
+            <div style="height: 100%"></div>
+            <img th:src="${board.trans_filepath}">
+            </div>
+        </td>
+        <td>
+            <div style="height: 100%"></div>
+            <img th:src="${board.tax_filepath}">
+            </div>
+        </td>
+        <td>
+            <div style="height: 100%"></div>
+            <img th:src="${board.shop_filepath}">
+            </div>
+        </td>
+    </tr>
 </table>
 </body>
 </html>

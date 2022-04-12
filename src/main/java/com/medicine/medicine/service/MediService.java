@@ -43,7 +43,7 @@ public class MediService {
         File trans_saveFile = new File(trans_projectPath,trans_fileName);
         trans_file.transferTo(trans_saveFile);
         mediDto.setTrans_filename(trans_fileName);
-        mediDto.setTrans_filepath("/files/"+trans_fileName);
+        mediDto.setTrans_filepath("/files/shop/"+trans_fileName);
 
 
         String tax_projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files\\tax";
@@ -53,7 +53,7 @@ public class MediService {
         File tax_saveFile = new File(tax_projectPath,tax_fileName);
         tax_file.transferTo(tax_saveFile);
         mediDto.setTax_filename(tax_fileName);
-        mediDto.setTax_filepath("/files/"+tax_fileName);
+        mediDto.setTax_filepath("/files/tax/"+tax_fileName);
 
 
         String shop_projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files\\shop";
@@ -62,7 +62,7 @@ public class MediService {
         File shop_saveFile = new File(shop_projectPath,shop_fileName);
         shop_file.transferTo(shop_saveFile);
         mediDto.setShop_filename(shop_fileName);
-        mediDto.setShop_filepath("/files/"+shop_fileName);
+        mediDto.setShop_filepath("/files/shop/"+shop_fileName);
 
 
 
@@ -116,6 +116,12 @@ public class MediService {
                 .producer(mediEntity.getProducer())
                 .title(mediEntity.getTitle())
                 .trans(mediEntity.getTrans())
+                .trans_filename(mediEntity.getTrans_filename())
+                .trans_filepath(mediEntity.getTax_filepath())
+                .tax_filename(mediEntity.getTax_filename())
+                .tax_filepath(mediEntity.getShop_filepath())
+                .shop_filename(mediEntity.getShop_filename())
+                .shop_filepath(mediEntity.getTax_filepath())
                 .build();
     }
 
