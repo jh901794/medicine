@@ -8,11 +8,14 @@ import lombok.*;
 @ToString
 
 @NoArgsConstructor
-public class fileDto {
+public class FileDto {
     private Long fileid;
+
     private String origFilename;
     private String filename;
     private String filePath;
+
+    private Long fileSize;
 
     public FileEntity toEntity() {
         FileEntity fileEntity = FileEntity.builder()
@@ -25,10 +28,11 @@ public class fileDto {
     }
 
     @Builder
-    public fileDto(Long fileid, String origFilename, String filename, String filePath) {
+    public FileDto(Long fileid, String origFilename, String filename, String filePath, Long fileSize) {
         this.fileid = fileid;
         this.origFilename = origFilename;
         this.filename = filename;
         this.filePath = filePath;
+        this.fileSize = fileSize;
     }
 }

@@ -1,7 +1,9 @@
 package com.medicine.medicine.Controller;
 
+import com.medicine.medicine.dto.FileDto;
 import com.medicine.medicine.dto.MediDto;
 import com.medicine.medicine.dto.MemberDto;
+import com.medicine.medicine.service.FileService;
 import com.medicine.medicine.service.MediService;
 import com.medicine.medicine.service.MemberService;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,7 @@ import java.util.List;
 public class MediController {
     private MediService mediService;
     private MemberService memberService;
+    private FileService fileService;
 
     @GetMapping("/")
     public String list(Model model) {
@@ -37,8 +40,9 @@ public class MediController {
     }
 
     @PostMapping("/post")
-    public String write(MediDto mediDto, MultipartFile tradstat, MultipartFile taxbill, MultipartFile shopcert) throws Exception {
-        mediService.savePost(mediDto,tradstat,taxbill,shopcert);
+    public String write(MediDto mediDto, FileDto fileDto) throws Exception {
+        mediService.savePost(mediDto);
+        fileService.saveFile(fileDto);
 
         return "redirect:/";
     }

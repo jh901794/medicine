@@ -26,7 +26,9 @@ public class FileEntity {
     @ManyToOne
     @JoinColumn(name = "MediEntity_id")
     private MediEntity mediEntity;
-
+    public void MediEntity_id(MediEntity mediEntity) {
+        this.mediEntity = mediEntity;
+    }
     @Builder
     public FileEntity(Long fileid, String origFilename, String filename, String filePath) {
         this.fileid = fileid;

@@ -1,16 +1,23 @@
 package com.medicine.medicine.service;
 
 
+import com.medicine.medicine.domain.entity.FileEntity;
 import com.medicine.medicine.domain.entity.MediEntity;
 import com.medicine.medicine.domain.repository.MediRepository;
+import com.medicine.medicine.dto.FileDto;
 import com.medicine.medicine.dto.MediDto;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.File;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -35,35 +42,96 @@ public class MediService {
     }
 
     @Transactional
-    public Long savePost(MediDto mediDto, MultipartFile trans_file, MultipartFile tax_file, MultipartFile shop_file) throws Exception{
-        String trans_projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files\\trans";
-
-        UUID trans_uuid = UUID.randomUUID();
-        String trans_fileName = trans_uuid + "_" + trans_file.getOriginalFilename();
-        File trans_saveFile = new File(trans_projectPath,trans_fileName);
-        trans_file.transferTo(trans_saveFile);
-
-
-
-        String tax_projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files\\tax";
-
-        UUID tax_uuid= UUID.randomUUID();
-        String tax_fileName = tax_uuid + "_" + trans_file.getOriginalFilename();
-        File tax_saveFile = new File(tax_projectPath,tax_fileName);
-        tax_file.transferTo(tax_saveFile);
-
-
-
-        String shop_projectPath = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\files\\shop";
-        UUID shop_uuid = UUID.randomUUID();
-        String shop_fileName = shop_uuid + "_" + trans_file.getOriginalFilename();
-        File shop_saveFile = new File(shop_projectPath,shop_fileName);
-        shop_file.transferTo(shop_saveFile);
-
-
-
-
+    public Long savePost(MediDto mediDto) throws Exception{
         return mediRepository.save(mediDto.toEntity()).getId();
+    }
+
+    @Component
+    public class FileHandler {
+        private final FileService fileService;
+
+        public FileHandler(FileService fileService){
+            this.fileService = fileService;
+        }
+        public List<FileEntity> parseFileInfo(
+                List<MultipartFile> multipartFiles
+        )throws Exception{
+            List<FileEntity> filelist = new ArrayList<>();
+
+            if(!CollectionUtils.isEmpty(multipartFiles)) {
+                // 파일명을 업로드 한 날짜로 변환하여 저장
+                LocalDateTime now = LocalDateTime.now();
+                DateTimeFormatter dateTimeFormatter =
+                        DateTimeFormatter.ofPattern("yyyyMMdd");
+                String current_date = now.format(dateTimeFormatter);
+
+                // 프로젝트 디렉터리 내의 저장을 위한 절대 경로 설정
+                // 경로 구분자 File.separator 사용
+                String absolutePath = new File("").getAbsolutePath() + File.separator + File.separator;
+
+                // 파일을 저장할 세부 경로 지정
+                String path = "images" + File.separator + current_date;
+                File file = new File(path);
+
+                // 디렉터리가 존재하지 않을 경우
+                if(!file.exists()) {
+                    boolean wasSuccessful = file.mkdirs();
+
+                    // 디렉터리 생성에 실패했을 경우
+                    if(!wasSuccessful)
+                        System.out.println("file: was not successful");
+                }
+
+                // 다중 파일 처리
+                for(MultipartFile multipartFile : multipartFiles) {
+
+                    // 파일의 확장자 추출
+                    String originalFileExtension;
+                    String contentType = multipartFile.getContentType();
+
+                    // 확장자명이 존재하지 않을 경우 처리 x
+                    if(ObjectUtils.isEmpty(contentType)) {
+                        break;
+                    }
+                    else {  // 확장자가 jpeg, png인 파일들만 받아서 처리
+                        if(contentType.contains("image/jpeg"))
+                            originalFileExtension = ".jpg";
+                        else if(contentType.contains("image/png"))
+                            originalFileExtension = ".png";
+                        else  // 다른 확장자일 경우 처리 x
+                            break;
+                    }
+
+                    // 파일명 중복 피하고자 나노초까지 얻어와 지정
+                    String new_file_name = System.nanoTime() + originalFileExtension;
+
+                    // 파일 DTO 생성
+                    FileDto fileDto = FileDto.builder()
+                            .origFilename(multipartFile.getOriginalFilename())
+                            .filePath(path + File.separator + new_file_name)
+                            .fileSize(multipartFile.getSize())
+                            .build();
+
+                    // 파일 DTO 이용하여 Photo 엔티티 생성
+                    FileEntity fileEntity = new FileEntity(
+
+                    );
+
+                    // 생성 후 리스트에 추가
+                    filelist.add(fileEntity);
+
+                    // 업로드 한 파일 데이터를 지정한 파일에 저장
+                    file = new File(absolutePath + path + File.separator + new_file_name);
+                    multipartFile.transferTo(file);
+
+                    // 파일 권한 설정(쓰기, 읽기)
+                    file.setWritable(true);
+                    file.setReadable(true);
+                }
+            }
+
+            return filelist;
+        }
     }
 
     @Transactional
