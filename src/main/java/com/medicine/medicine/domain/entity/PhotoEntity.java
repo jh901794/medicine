@@ -1,14 +1,15 @@
 package com.medicine.medicine.domain.entity;
 
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "file")
-public class FileEntity {
+@Table(name = "photo")
+public class PhotoEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -23,17 +24,18 @@ public class FileEntity {
     @Column(nullable = false)
     private String filePath;
 
+    @Autowired
     @ManyToOne
     @JoinColumn(name = "MediEntity_id")
     private MediEntity mediEntity;
-    public void MediEntity_id(MediEntity mediEntity) {
-        this.mediEntity = mediEntity;
-    }
+
     @Builder
-    public FileEntity(Long fileid, String origFilename, String filename, String filePath) {
+
+    public PhotoEntity(Long fileid, String origFilename, String filename, String filePath, MediEntity mediEntity) {
         this.fileid = fileid;
         this.origFilename = origFilename;
         this.filename = filename;
         this.filePath = filePath;
+        this.mediEntity = mediEntity;
     }
 }

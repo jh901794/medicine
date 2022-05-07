@@ -1,9 +1,8 @@
 package com.medicine.medicine.Controller;
 
-import com.medicine.medicine.dto.FileDto;
+
 import com.medicine.medicine.dto.MediDto;
 import com.medicine.medicine.dto.MemberDto;
-import com.medicine.medicine.service.FileService;
 import com.medicine.medicine.service.MediService;
 import com.medicine.medicine.service.MemberService;
 import lombok.AllArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,7 +21,7 @@ import java.util.List;
 public class MediController {
     private MediService mediService;
     private MemberService memberService;
-    private FileService fileService;
+
 
     @GetMapping("/")
     public String list(Model model) {
@@ -40,9 +38,8 @@ public class MediController {
     }
 
     @PostMapping("/post")
-    public String write(MediDto mediDto, FileDto fileDto) throws Exception {
+    public String write(MediDto mediDto) throws Exception {
         mediService.savePost(mediDto);
-        fileService.saveFile(fileDto);
 
         return "redirect:/";
     }
