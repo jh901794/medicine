@@ -4,6 +4,9 @@ spring:
     url: jdbc:mysql://localhost:3306/medicine?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
     password: 1234
+  http:
+    multipart:
+      location: data/upload_tmp
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect

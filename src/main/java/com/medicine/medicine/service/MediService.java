@@ -3,6 +3,7 @@ package com.medicine.medicine.service;
 
 import com.medicine.medicine.domain.entity.MediEntity;
 import com.medicine.medicine.domain.repository.MediRepository;
+import com.medicine.medicine.dto.FileDto;
 import com.medicine.medicine.dto.MediDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,6 @@ public class MediService {
 
         return mediDtoList;
     }
-
     @Transactional
     public Long savePost(MediDto mediDto) throws Exception{
         return mediRepository.save(mediDto.toEntity()).getId();
