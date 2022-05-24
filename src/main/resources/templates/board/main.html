@@ -12,7 +12,7 @@
 <a sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
 {{/sessionedUser}}
 {{#sessionedUser}}
-<a sec:authorize="isAuthenticated()" th:href="@{/}">로그아웃</a>
+<a sec:authorize="isAuthenticated()" th:href="@{/login}">로그아웃</a>
 {{/sessionedUser}}
 <!-- 분류기능 -->
 <a th:href="@{/}"> 전체 조회 </a> | <a th:href="@{/board/doing}"> 진행중 </a> | <a th:href="@{/board/done}"> 완료됨 </a>

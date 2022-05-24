@@ -7,8 +7,6 @@ spring:
   http:
     multipart:
       location: data/upload_tmp
-  mvc:
-    static-path-pattern:
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect

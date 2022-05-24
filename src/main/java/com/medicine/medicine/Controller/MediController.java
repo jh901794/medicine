@@ -208,6 +208,7 @@ public class MediController {
             return "redirect:/users/login";
         }
         System.out.println("Login Success");
+
         session.setAttribute("Member", member);
 
         return "redirect:/";
