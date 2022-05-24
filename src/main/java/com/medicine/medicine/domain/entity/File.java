@@ -22,15 +22,19 @@ public class File {
     @Column(nullable = false)
     private String filePath;
 
-    @Column(nullable = true)
-    private Long Mediid;
+    @Column(nullable = false)
+    private String category;
+
+    @Column(nullable = false)
+    private Long mediid;
 
     @Builder
-    public File(Long id, String origFilename, String filename, String filePath, Long mediid) {
+    public File(Long id, String origFilename, String filename, String filePath, String category,Long mediid) {
         this.id = id;
         this.origFilename = origFilename;
         this.filename = filename;
         this.filePath = filePath;
-        this.Mediid = mediid;
+        this.category = category;
+        this.mediid = mediid;
     }
 }

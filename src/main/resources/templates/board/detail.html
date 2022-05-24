@@ -1,10 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Title</title>
 </head>
 <body>
+<div th:insert="common/header.html" id="header"></div>
+<div th:each="board : ${boardList}">
+    <form th:action="@{/detail/tradstat}" method="get">
+        <button type="submit" name="_id" th:value="${board.id}">거래 명세서</button>
+    </form>
+    <form th:action="@{/detail/taxbill}" method="get">
+        <button type="submit" name="_id" th:value="${board.id}">세금 계산서</button>
+    </form>
+    <form th:action="@{/detail/shopcert}" method="get">
+        <button type="submit" name="_id" th:value="${board.id}">출하증명서</button>
+    </form>
+</div>
+<hr>
 <table border="1" style="border-collapse: collapse" width="90%">
     <thead>
     <tr>
@@ -44,6 +57,7 @@
     </tr>
     </tbody>
 </table>
+<!--
 <table border="1" style="border-collapse: collapse "width="90%">
     <thead>
     <tr>
@@ -51,23 +65,43 @@
         <th> 세금계산서</th>
         <th> 출하증명서</th>
     </tr>
-    <tr>
-        <td>
+    <tr th:each=" file : ${fileList}">
+        <td th:if="${file.getcategory().toString.equals('tradstat')">
             <div style="height: 100%"></div>
             <img th:src="${board.trans_filepath}">
             </div>
         </td>
-        <td>
+        <td th:if="${file.getcategory().toString.equals('tradstat')">
             <div style="height: 100%"></div>
             <img th:src="${board.tax_filepath}">
             </div>
         </td>
-        <td>
+        <td th:if="${file.getcategory().toString.equals('tradstat')">
             <div style="height: 100%"></div>
             <img th:src="${board.shop_filepath}">
             </div>
         </td>
     </tr>
 </table>
+-->
+<div th:if="${fileList}">
+    <div th:each="file : ${fileList}">
+        <img src="/images/tradstat/${file.filename}" style="width:300px;height:auto;">
+    </div>
+</div>
+<div th:if="${fileList1}">
+    <div th:each="file : ${fileList1}">
+        <img src="/images/taxbill/${file.filename}" style="width:300px;height:auto;">
+    </div>
+</div>
+<div th:if="${fileList2}">
+    <div th:each="file : ${fileList2}">
+        <img src="/images/shopcert/${file.filename}" style="width:300px;height:auto;">
+    </div>
+</div>
 </body>
+
+<script>
+
+</script>
 </html>

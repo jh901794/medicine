@@ -4,6 +4,7 @@ package com.medicine.medicine.service;
 import com.medicine.medicine.domain.Role;
 import com.medicine.medicine.domain.entity.MemberEntity;
 import com.medicine.medicine.domain.repository.MemberRepository;
+import com.medicine.medicine.dto.MediDto;
 import com.medicine.medicine.dto.MemberDto;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,7 +23,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Service
-public class MemberService implements UserDetailsService {
+public class MemberService{
     private MemberRepository memberRepository;
 
     @Transactional
@@ -34,15 +35,16 @@ public class MemberService implements UserDetailsService {
         return memberRepository.save(memberDto.toEntity()).getId();
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-        Optional<MemberEntity> userEntityWrapper = memberRepository.findByEmail(userEmail);
-        MemberEntity userEntity = userEntityWrapper.get();
+    public MemberDto findEmail(String userEmail){
+        MemberEntity memberEntities = memberRepository.findByEmail(userEmail);
+        MemberDto memberDto = new MemberDto();
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
+        memberDto.setEmail(memberEntities.getEmail());
+        memberDto.setPassword(memberEntities.getPassword());
+        memberDto.setName(memberEntities.getName());
+        memberDto.setId(memberEntities.getId());
 
-        authorities.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
-
-        return new User(userEntity.getEmail(), userEntity.getPassword(), authorities);
+        return memberDto;
     }
+
 }

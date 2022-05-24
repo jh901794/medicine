@@ -7,14 +7,16 @@ spring:
   http:
     multipart:
       location: data/upload_tmp
+  mvc:
+    static-path-pattern:
 
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
     show-sql: true
     hibernate:
-      format_sql: ture
-      ddl-auto: create
+      format_sql: false
+      ddl-auto: none
 
 logging:
   level:
